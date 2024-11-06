@@ -1,5 +1,4 @@
 import time
-
 from app.ports.ai_repository_port import AiRepositoryPort
 from openai import OpenAI
 from openai.types.beta import Assistant
@@ -12,10 +11,8 @@ class AiRepository(AiRepositoryPort):
         self.thread = self.client.beta.threads.create()
 
     def answer_message(self, message: str):
-
         try:
-
-            ai_message = self.client.beta.threads.messages.create(
+            self.client.beta.threads.messages.create(
                 thread_id=self.thread.id,
                 role="user",
                 content=message
@@ -26,7 +23,7 @@ class AiRepository(AiRepositoryPort):
                 assistant_id=self.assistant.id
             )
 
-            while run.status == 'queued' or run.status == 'in_progress':
+            while run.status in ['queued', 'in_progress']:
                 run = self.client.beta.threads.runs.retrieve(
                     thread_id=self.thread.id,
                     run_id=run.id,

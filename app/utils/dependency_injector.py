@@ -8,7 +8,7 @@ class DependencyInjector:
 
     def configure(self):
         ai_client = ai_provider.get_ai_client()
-        ai_repository = AiRepository(ai_client=ai_client, ai_assistant=ai_provider.get_ai_assistant())
+        ai_repository = AiRepository(ai_client, ai_assistant=ai_provider.get_ai_assistant())
 
         self.services["ai_repository"] = ai_repository
 
