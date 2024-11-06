@@ -7,8 +7,7 @@ config = dotenv_values(".env")
 
 client = OpenAI(api_key=config["OPENAI_KEY"])
 
-delivery_assistant = client.beta.assistants.retrieve('asst_YvfTiuDQXxV7TKz86GdzjdWx')
-
+assistant = client.beta.assistants.retrieve(config['ASSISTANT_ID'])
 
 def wait_on_run(run, thread):
     while run.status == 'queued' or run.status == 'in_progress':
@@ -30,7 +29,7 @@ def answer_messages(message):
         )
         run = client.beta.threads.runs.create(
             thread_id=thread.id,
-            assistant_id=delivery_assistant.id,
+            assistant_id=assistant.id,
         )
 
         wait_on_run(run, thread)
